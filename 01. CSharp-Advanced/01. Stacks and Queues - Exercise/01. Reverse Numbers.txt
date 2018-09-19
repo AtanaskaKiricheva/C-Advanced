@@ -1,0 +1,17 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+public class Program
+{
+    public static void Main()
+    {
+        Stack<int> n = new Stack<int>(Console.ReadLine().Split(' ').Select(int.Parse));
+
+        foreach (var item in n)
+        {
+            Console.Write(item+" ");
+        }
+        Console.WriteLine();
+    }
+}
