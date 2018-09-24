@@ -1,0 +1,30 @@
+using System;
+using System.Linq;
+
+class Program
+{
+    static void Main()
+    {
+        int n = int.Parse(Console.ReadLine());
+
+        int firstDiagonal = 0;
+        int secondDiagonal = 0;
+
+        for (int row = 0; row < n; row++)
+        {
+            int[] line = Console.ReadLine().Split(" ",StringSplitOptions.RemoveEmptyEntries).Select(int.Parse).ToArray();
+            for (int col = 0; col < line.Length; col++)
+            {
+                if (row == col)
+                {
+                    firstDiagonal += line[col];
+                }
+                if (col == line.Length-1 - row)
+                {
+                    secondDiagonal += line[col];
+                }
+            }
+        }
+        Console.WriteLine(Math.Abs(firstDiagonal-secondDiagonal));
+    }
+}

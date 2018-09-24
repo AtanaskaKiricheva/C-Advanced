@@ -1,0 +1,57 @@
+using System;
+using System.Linq;
+
+class Program
+{
+    static void Main()
+    {
+        int n = int.Parse(Console.ReadLine());
+
+        string[][] firstMatrix = new string[n][];
+        string[][] reversedMatrix = new string[n][];
+        int count = 0;
+
+        //fill first matrix
+        for (int row = 0; row < n; row++)
+        {
+            string[] cols = Console.ReadLine().Split(" ",StringSplitOptions.RemoveEmptyEntries);
+            firstMatrix[row] = cols;
+            count += cols.Length;
+        }
+
+        //fill reversed
+        for (int row = 0 ; row < n; row++)
+        {
+            string[] cols = Console.ReadLine().Split(" ", StringSplitOptions.RemoveEmptyEntries);
+            reversedMatrix[row] = cols.Reverse().ToArray();
+            count += cols.Length;
+        }
+
+        bool matches = false;
+
+        for (int i = 0; i < n-1; i++)
+        {
+            if (firstMatrix[i].Length + reversedMatrix[i].Length ==
+                firstMatrix[i+1].Length + reversedMatrix[i+1].Length)
+            {
+                matches = true;
+            }
+            else
+            {
+                matches = false;
+            }
+        }
+
+        if (matches)
+        {
+            for (int i = 0; i < n; i++)
+            {
+                Console.WriteLine("["+string.Join(", ", firstMatrix[i])+", "+string.Join(", ",reversedMatrix[i])+"]");
+            }
+        }
+        else
+        {
+            Console.WriteLine($"The total number of cells is: {count}");
+        }
+    }
+}

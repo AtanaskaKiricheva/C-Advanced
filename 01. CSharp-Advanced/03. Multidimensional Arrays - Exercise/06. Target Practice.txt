@@ -1,0 +1,112 @@
+using System;
+using System.Linq;
+
+class Program
+{
+    static void Main()
+    {
+
+        int[] line = Console.ReadLine().Split(" ", StringSplitOptions.RemoveEmptyEntries).Select(int.Parse).ToArray();
+
+        int rows = line[0];
+        int cols = line[1];
+        string[][] matrix = new string[rows][];
+
+        string text = Console.ReadLine();
+       
+        int i = 0;
+        bool isLeft = true;
+
+        for (int row = rows - 1; row >= 0; row--)
+        {
+            matrix[row] = new string[cols];
+            if (isLeft)
+            {
+                for (int col = cols - 1; col >= 0; col--)
+                {
+                    if (i >= text.Length)
+                    {
+                        i = 0;
+                    }
+                    matrix[row][col] = text[i].ToString();
+                    isLeft = false;
+                    i++;
+                }
+            }
+            else
+            {
+                for (int col = 0; col < cols; col++)
+                {
+                    if (i >= text.Length)
+                    {
+                        i = 0;
+                    }
+                    matrix[row][col] = text[i].ToString();
+                    isLeft = true;
+                    i++;
+                }
+            }
+        }
+
+        MakeShot(matrix);
+
+        void MakeShot(string[][] matr)
+        {
+            var shotData = Console.ReadLine()
+               .Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries)
+               .Select(int.Parse)
+               .ToArray();
+
+            int shotRow = shotData[0];
+            int shotCol = shotData[1];
+            int shotRad = shotData[2];
+
+            for (int r = 0; r < matr.Length; r++)
+            {
+                for (int c = 0; c < matr[r].Length; c++)
+                {
+                    bool isInside = CalculateIfPointIsIn(shotRow, shotCol, r, c, shotRad);
+                    if (isInside)
+                    {
+                        matr[r][c] = " ";
+                    }
+                }
+            }
+        }
+        bool CalculateIfPointIsIn(int centerY, int centerX, int y, int x, int rad)
+        {
+            double distance = Math.Sqrt(Math.Pow(x - centerX, 2) + Math.Pow(y - centerY, 2));
+            if (distance <= rad)
+            {
+                return true;
+            }
+            return false;
+        }
+    
+
+    bool check = false;
+
+        for (int row = 1; row < rows; row++)
+        {
+            for (int col = 0; col < cols; col++)
+            {
+                if (matrix[row][col] == " " && matrix[row - 1][col] != " ")
+                {
+                    matrix[row][col] = matrix[row - 1][col];
+                    matrix[row - 1][col] = " ";
+                    check = true;
+                }
+            }
+            if (check)
+            {
+                row = 0;
+                check = false;
+            }
+        }
+        for (int j = 0; j < rows; j++)
+        {
+            Console.WriteLine(string.Join("", matrix[j]));
+        }
+
+    }
+}
