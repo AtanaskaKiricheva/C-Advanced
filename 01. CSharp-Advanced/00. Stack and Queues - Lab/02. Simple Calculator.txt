@@ -1,0 +1,29 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+class Program
+{
+    static void Main()
+    {
+
+        Stack<string> calculator = new Stack<string>(Console.ReadLine().Split(" ", StringSplitOptions.RemoveEmptyEntries).Reverse());
+        int sum = int.Parse(calculator.Pop());
+
+        while (calculator.Count > 1)
+        {
+            string operand = calculator.Pop();
+            int firstNum = int.Parse(calculator.Pop());
+
+            if (operand == "+")
+            {
+                sum += firstNum;
+            }
+            else
+            {
+                sum -= firstNum;
+            }
+        }
+        Console.WriteLine(sum);
+    }
+}
