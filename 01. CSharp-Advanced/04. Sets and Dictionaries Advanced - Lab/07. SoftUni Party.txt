@@ -1,0 +1,48 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text.RegularExpressions;
+
+class Program
+{
+    static void Main()
+    {
+        string command = Console.ReadLine();
+        HashSet<string> VIP = new HashSet<string>();
+        HashSet<string> regular = new HashSet<string>();
+
+        while (command != "PARTY")
+        {
+            if (Regex.IsMatch(command, "^[0-9]"))
+            {
+                VIP.Add(command);
+            }
+            else
+            {
+                regular.Add(command);
+            }
+            command = Console.ReadLine();
+        }
+        while (command != "END")
+        {
+            if (VIP.Contains(command))
+            {
+                VIP.Remove(command);
+            }
+            else
+            {
+                regular.Remove(command);
+            }
+            command = Console.ReadLine();
+        }
+        Console.WriteLine(VIP.Count + regular.Count);
+        if (VIP.Count > 0)
+        {
+            Console.WriteLine($"{string.Join("\r\n", VIP)}");
+        }
+        if (regular.Count > 0)
+        {
+            Console.WriteLine(string.Join("\r\n", regular));
+        }
+    }
+}

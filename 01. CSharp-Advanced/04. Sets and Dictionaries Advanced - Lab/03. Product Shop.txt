@@ -1,0 +1,32 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+class Program
+{
+    static void Main()
+    {
+        string command = Console.ReadLine();
+        SortedDictionary<string, List<string>> productShop = new SortedDictionary<string, List<string>>();
+
+        while (command != "Revision")
+        {
+            string[] split = command.Split(", ");
+            string shop = split[0];
+            string product = split[1];
+            double price = double.Parse(split[2]);
+
+            if (!productShop.ContainsKey(shop))
+            {
+                productShop.Add(shop, new List<string>());
+            }
+            productShop[shop].Add($"Product: {product}, Price: {price}");
+            command = Console.ReadLine();
+        }
+
+        foreach (var kv in productShop)
+        {
+            Console.WriteLine($"{kv.Key}->\r\n{string.Join("\r\n",kv.Value)}");
+        }
+    }
+}

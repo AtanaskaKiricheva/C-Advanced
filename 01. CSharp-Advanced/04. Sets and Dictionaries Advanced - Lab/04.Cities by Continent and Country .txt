@@ -1,0 +1,40 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+class Program
+{
+    static void Main()
+    {
+        int n = int.Parse(Console.ReadLine());
+        Dictionary<string, Dictionary<string, List<string>>> dict = new Dictionary<string, Dictionary<string, List<string>>>();
+
+        for (int i = 0; i < n; i++)
+        {
+            string[] info = Console.ReadLine().Split();
+            string continent = info[0];
+            string country = info[1];
+            string city = info[2];
+
+            if (!dict.ContainsKey(continent))
+            {
+                dict.Add(continent, new Dictionary<string, List<string>>());
+                dict[continent].Add(country, new List<string>());
+            }
+            else if (!dict[continent].ContainsKey(country))
+            {
+                dict[continent].Add(country, new List<string>());
+            }
+            dict[continent][country].Add(city);
+        }
+
+        foreach (var kv in dict)
+        {
+            Console.WriteLine(kv.Key + ":");
+            foreach (var keyvalue in kv.Value)
+            {
+                Console.WriteLine($"    {keyvalue.Key} -> {string.Join(", ", keyvalue.Value)}");
+            }
+        }
+    }
+}
