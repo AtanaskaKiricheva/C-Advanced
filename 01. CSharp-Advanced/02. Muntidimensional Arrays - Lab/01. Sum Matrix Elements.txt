@@ -1,0 +1,26 @@
+using System;
+using System.Linq;
+
+class Program
+{
+    static void Main()
+    {
+        int[] dimensions = Console.ReadLine().Split(", ", StringSplitOptions.RemoveEmptyEntries).Select(int.Parse).ToArray();
+        int[][] matrix = new int[dimensions[0]][];
+
+        int sumElements = 0;
+
+        for (int i = 0; i < dimensions[0]; i++)
+        {
+            int[] cols = Console.ReadLine().Split(", ", StringSplitOptions.RemoveEmptyEntries).Select(int.Parse).ToArray();
+            matrix[i] = cols;
+            for (int j = 0; j < dimensions[1]; j++)
+            {
+                sumElements += cols[j];
+            }
+        }
+        Console.WriteLine(dimensions[0]);
+        Console.WriteLine(dimensions[1]);
+        Console.WriteLine(sumElements);
+    }
+}
