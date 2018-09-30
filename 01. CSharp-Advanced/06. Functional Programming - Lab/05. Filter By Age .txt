@@ -1,0 +1,91 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+class Program
+{
+    static void Main()
+    {
+        int n = int.Parse(Console.ReadLine());
+        List<string> pairs = new List<string>();
+
+        for (int i = 0; i < n; i++)
+        {
+            pairs.Add(Console.ReadLine());
+        }
+        string condition = Console.ReadLine();
+        int age = int.Parse(Console.ReadLine());
+        string format = Console.ReadLine();
+
+        isYounger(condition);
+        pairsToPrint(pairs, isYounger(condition), age);
+        printFormat(pairsToPrint(pairs, isYounger(condition), age),format);
+
+
+    }
+
+    private static void printFormat(Dictionary<string, int> dictionary, string format)
+    {
+        if (format == "name")
+        {
+            foreach (var kv in dictionary)
+            {
+                Console.WriteLine(kv.Key);
+            }
+        }
+        else if (format == "age")
+        {
+            foreach (var kv in dictionary)
+            {
+                Console.WriteLine(kv.Value);
+            }
+        }
+        else
+        {
+            foreach (var kv in dictionary)
+            {
+                Console.WriteLine($"{kv.Key} - {kv.Value}");
+            }
+        }
+    }
+
+    private static Dictionary<string,int> pairsToPrint(List<string> pairs, bool isYounger, int age)
+    {
+        Dictionary<string, int> filtered = new Dictionary<string, int>();
+        if (isYounger)
+        {
+            foreach (var pair in pairs)
+            {
+                string[] split = pair.Split(", ");
+                if (int.Parse(split[1]) < age)
+                {
+                    filtered.Add(split[0], int.Parse(split[1]));
+                }
+            }
+        }
+        else
+        {
+            foreach (var pair in pairs)
+            {
+                string[] split = pair.Split(", ");
+                if (int.Parse(split[1]) >= age)
+                {
+                    filtered.Add(split[0], int.Parse(split[1]));
+                }
+            }
+        }
+        return filtered;
+    }
+
+    private static bool isYounger(string condition)
+    {
+        if (condition == "younger")
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+}

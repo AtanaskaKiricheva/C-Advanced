@@ -1,0 +1,13 @@
+using System;
+using System.Linq;
+
+class Program
+{
+    static void Main()
+    {
+        int[] integers = Console.ReadLine().Split(", ").Select(int.Parse).ToArray();
+        Array.Sort(integers);
+
+        Console.WriteLine(string.Join(", ",integers.Where(x => x % 2 == 0)));
+    }
+}

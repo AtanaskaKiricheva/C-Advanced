@@ -1,0 +1,12 @@
+using System;
+using System.Linq;
+
+class Program
+{
+    static void Main()
+    {
+        string[] words = Console.ReadLine().Split(" ",StringSplitOptions.RemoveEmptyEntries);
+
+        Console.WriteLine(string.Join("\r\n",words.Where(x => x[0].ToString() == x[0].ToString().ToUpper())));
+    }
+}
