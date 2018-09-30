@@ -1,0 +1,22 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+class Program
+{
+    static void Main()
+    {
+        int n = int.Parse(Console.ReadLine());
+        SortedSet<string> table = new SortedSet<string>();
+
+        for (int i = 0; i < n; i++)
+        {
+            string[] chemicals = Console.ReadLine().Split(" ",StringSplitOptions.RemoveEmptyEntries);
+            foreach (var ch in chemicals)
+            {
+                table.Add(ch);
+            }
+        }
+        Console.WriteLine(string.Join(" ",table));
+    }
+}

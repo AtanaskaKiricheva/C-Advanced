@@ -1,0 +1,25 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+class Program
+{
+    static void Main()
+    {
+        string text = Console.ReadLine();
+        SortedDictionary<char, int> symbols = new SortedDictionary<char, int>();
+
+        foreach (var ch in text)
+        {
+            if (!symbols.ContainsKey(ch))
+            {
+                symbols.Add(ch, 0);
+            }
+            symbols[ch]++;
+        }
+        foreach (var kv in symbols)
+        {
+            Console.WriteLine($"{kv.Key}: {kv.Value} time/s");
+        }
+    }
+}

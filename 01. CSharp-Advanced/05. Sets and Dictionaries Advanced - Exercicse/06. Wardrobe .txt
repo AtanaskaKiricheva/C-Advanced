@@ -1,0 +1,60 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+class Program
+{
+    static void Main()
+    {
+        int n = int.Parse(Console.ReadLine());
+        Dictionary<string, Dictionary<string, int>> wardrobe = new Dictionary<string, Dictionary<string, int>>();
+
+        for (int i = 0; i < n; i++)
+        {
+            string[] data = Console.ReadLine().Split(" -> ", StringSplitOptions.RemoveEmptyEntries);
+            string color = data[0];
+            string[] items = data[1].Split(",");
+
+            if (!wardrobe.ContainsKey(color))
+            {
+                wardrobe.Add(color, new Dictionary<string, int>());
+                foreach (string item in items)
+                {
+                    if (!wardrobe[color].ContainsKey(item))
+                    {
+                        wardrobe[color].Add(item, 0);
+                    }
+                    wardrobe[color][item]++;
+                }
+            }
+            else
+            {
+                foreach (var item in items)
+                {
+                    if (!wardrobe[color].ContainsKey(item))
+                    {
+                        wardrobe[color].Add(item, 0);
+                    }
+                    wardrobe[color][item]++;
+                }
+            }
+        }
+        string[] find = Console.ReadLine().Split(" ", StringSplitOptions.RemoveEmptyEntries);
+
+        foreach (var color in wardrobe)
+        {
+            Console.WriteLine($"{color.Key} clothes:");
+            foreach (var items in color.Value)
+            {
+                if (color.Key == find[0] && items.Key == find[1])
+                {
+                    Console.WriteLine($"* {items.Key} - {items.Value} (found!)");
+                }
+                else
+                {
+                    Console.WriteLine($"* {items.Key} - {items.Value}");
+                }
+            }
+        }
+    }
+}

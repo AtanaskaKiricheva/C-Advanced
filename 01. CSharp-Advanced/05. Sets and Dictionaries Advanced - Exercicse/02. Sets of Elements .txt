@@ -1,0 +1,27 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+class Program
+{
+    static void Main()
+    {
+        int[] nm = Console.ReadLine().Split().Select(int.Parse).ToArray();
+
+        HashSet<string> all = new HashSet<string>();
+        HashSet<string> repeated = new HashSet<string>();
+
+        for (int i = 0; i < nm[0]; i++)
+        {
+            string num = Console.ReadLine();
+                all.Add(num);
+        }
+        for (int i = 0; i < nm[1]; i++)
+        {
+            string num = Console.ReadLine();
+                repeated.Add(num);
+        }
+        all.IntersectWith(repeated);
+        Console.WriteLine(string.Join(" ", all));
+    }
+}
