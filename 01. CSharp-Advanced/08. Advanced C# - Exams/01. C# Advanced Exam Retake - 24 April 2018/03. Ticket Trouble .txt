@@ -1,0 +1,58 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text.RegularExpressions;
+
+class Program
+{
+    static void Main()
+    {
+        string location = Console.ReadLine();
+        string text = Console.ReadLine();
+        string regex1 = @".*?\b\[.*?{([A-Z]{3} [A-Z]{2})}.*?{([A-Z]{1}[0-9]{1,2})}.*?]\b.*?";
+        string regex2 = @".*?\b{.*?\[([A-Z]{3} [A-Z]{2})\].*?\[([A-Z]{1}[0-9]{1,2})].*?}\b.*?";
+        Match match1 = Regex.Match(text, regex1);
+        Match match2 = Regex.Match(text, regex2);
+
+        List<string> seats = new List<string>();
+
+        while (match1.Success || match2.Success)
+        {
+            if (match1.Groups[1].Value == location)
+            {
+                seats.Add(match1.Groups[2].Value);
+                match1 = match1.NextMatch();
+            }
+            else if (match2.Groups[1].Value == location)
+            {
+                seats.Add(match2.Groups[2].Value);
+                match2 = match2.NextMatch();
+            }
+        }
+        if (seats.Count > 2)
+        {
+            List<string> sameRow = new List<string>();
+            for (int first = 0; first < seats.Count; first++)
+            {
+                for (int other = first + 1; other < seats.Count; other++)
+                {
+                    if (seats[first].Substring(1, seats[first].Length - 1) == seats[other].Substring(1, seats[other].Length - 1))
+                    {
+                        sameRow.Add(seats[first]);
+                        sameRow.Add(seats[other]);
+                        break;
+                    }
+                }
+                if (sameRow.Count > 0)
+                {
+                    break;
+                }
+            }
+            Console.WriteLine($"You are traveling to {location} on seats {string.Join(" and ", sameRow)}.");
+        }
+        else
+        {
+            Console.WriteLine($"You are traveling to {location} on seats {string.Join(" and ", seats)}.");
+        }
+    }
+}

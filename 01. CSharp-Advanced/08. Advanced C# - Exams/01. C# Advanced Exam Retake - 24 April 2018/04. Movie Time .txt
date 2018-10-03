@@ -1,0 +1,90 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text.RegularExpressions;
+
+class Program
+{
+    static void Main()
+    {
+        string wifeFavGenre = Console.ReadLine();
+        string movieDuration = Console.ReadLine();
+        string command = Console.ReadLine();
+        Dictionary<string, int> favouriteMovies = new Dictionary<string, int>();
+        Dictionary<string, int> otherMovies = new Dictionary<string, int>();
+
+        while (command != "POPCORN!")
+        {
+            string name = command.Split("|")[0];
+            string genre = command.Split("|")[1];
+            string originalTime = command.Split("|")[2];
+            int duration = TimeInSeconds(command.Split("|")[2]);
+
+            if (genre == wifeFavGenre && !favouriteMovies.ContainsKey(name + " - " + originalTime))
+            {
+                favouriteMovies.Add(name + " - " + originalTime,duration);
+            }
+            else if(!otherMovies.ContainsKey(name + " - " + originalTime))
+            {
+                otherMovies.Add(name + " - " + originalTime,duration);
+            }
+
+            command = Console.ReadLine();
+        }
+        if (movieDuration == "Short")
+        {
+            favouriteMovies = favouriteMovies.OrderBy(x => x.Value).ToDictionary(x => x.Key, v => v.Value);
+            otherMovies = otherMovies.OrderBy(x => x.Value).ToDictionary(x => x.Key, v => v.Value);
+        }
+        else
+        {
+            favouriteMovies = favouriteMovies.OrderByDescending(x => x.Value).ThenBy(x => x.Key).ToDictionary(x => x.Key, v => v.Value);
+            otherMovies = otherMovies.OrderByDescending(x => x.Value).ThenBy(x => x.Key).ToDictionary(x => x.Key, v => v.Value);
+        }
+
+        int counter = 0;
+        int totalSeconds = favouriteMovies.Values.Sum() + otherMovies.Values.Sum();
+        string chosen = "";
+
+        while (command != "Yes")
+        {
+
+            if (favouriteMovies.Count < counter)
+            {
+                var element = otherMovies.ElementAt(counter - favouriteMovies.Count).Key;
+                chosen = element;
+            }
+            else
+            {
+                var element = favouriteMovies.ElementAt(counter).Key;
+                chosen = element;
+            }
+
+            counter++;
+            Console.WriteLine(chosen.Split(" - ")[0]);
+            command = Console.ReadLine();
+        }
+
+        Console.WriteLine("We're watching " + chosen);
+        Console.WriteLine("Total Playlist Duration: " + TotalPlaylistDuration(totalSeconds));
+
+    }
+
+    private static string TotalPlaylistDuration(int totalSeconds)
+    {
+        TimeSpan t = TimeSpan.FromSeconds(totalSeconds);
+        return string.Format($"{t.Hours:d2}:{t.Minutes:d2}:{t.Seconds:d2}");
+    }
+
+    private static int TimeInSeconds(string time)
+    {
+        int hours = time.Split(":").Select(int.Parse).ToArray()[0];
+        int minutes = time.Split(":").Select(int.Parse).ToArray()[1];
+        int seconds = time.Split(":").Select(int.Parse).ToArray()[2];
+
+        seconds += (minutes * 60) + ((hours * 60) * 60);
+
+        return seconds;
+    }
+
+}
