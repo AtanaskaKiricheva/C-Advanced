@@ -1,0 +1,66 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+public class Program
+{
+    public static void Main()
+    {
+        List<string> people = Console.ReadLine().Split().ToList();
+        string command;
+
+        while ((command = Console.ReadLine()) != "Party!")
+        {
+            if (command.Split()[0] == "Double")
+            {
+                if (command.Split()[1] == "StartsWith")
+                {
+                    List<string> toBeAdded = people.FindAll(x => x.StartsWith(command.Split()[2]));
+                    foreach (var item in toBeAdded)
+                    {
+                        people.Add(item);
+                    }
+                }
+                else if (command.Split()[1] == "EndsWith")
+                {
+                    List<string> toBeAdded = people.FindAll(x => x.EndsWith(command.Split()[2]));
+                    foreach (var item in toBeAdded)
+                    {
+                        people.Add(item);
+                    }
+                }
+                else
+                {
+                    List<string> toBeAdded = people.FindAll(x => x.Length == int.Parse(command.Split()[2]));
+                    foreach (var item in toBeAdded)
+                    {
+                        people.Add(item);
+                    }
+                }
+            }
+            else
+            {
+                if (command.Split()[1] == "StartsWith")
+                {
+                    people.RemoveAll(x => x.StartsWith(command.Split()[2]));
+                }
+                else if (command.Split()[1] == "EndsWith")
+                {
+                    people.RemoveAll(x => x.EndsWith(command.Split()[2]));
+                }
+                else
+                {
+                    List<string> toBeRemoved = people.FindAll(x => x.Length == int.Parse(command.Split()[2]));
+                    foreach (var item in toBeRemoved)
+                    {
+                        people.Remove(item);
+                    }
+                }
+            }
+        }
+        if (people.Count > 0)
+            Console.WriteLine(string.Join(", ", people) + " are going to the party!");
+        else
+            Console.WriteLine("Nobody is going to the party!");
+    }
+}

@@ -1,0 +1,27 @@
+using System;
+using System.Linq;
+
+public class Program
+{
+    public static void Main()
+    {
+        int n = int.Parse(Console.ReadLine());
+        int[] seq = Console.ReadLine().Split().Select(int.Parse).ToArray();
+
+        for (int i = 1; i <= n; i++)
+        {
+            bool isTrue = true;
+            for (int j = 0; j < seq.Length; j++)
+            {
+                if (i % seq[j] != 0)
+                {
+                    isTrue = false;
+                }
+            }
+            if (isTrue)
+            {
+                Console.Write(i+" ");
+            }
+        }
+    }
+}

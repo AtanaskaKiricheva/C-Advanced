@@ -1,0 +1,24 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+public class Program
+{
+    public static void Main()
+    {
+
+        List<int> arr = Console.ReadLine().Split().Select(int.Parse).ToList();
+        string command;
+
+        while ((command = Console.ReadLine()) != "end")
+        {
+            switch (command)
+            {
+                case "add": arr = arr.Select(x => x += 1).ToList(); break;
+                case "subtract": arr = arr.Select(x => x -= 1).ToList(); break;
+                case "multiply": arr = arr.Select(x => x *= 2).ToList(); break;
+                case "print": Console.WriteLine(string.Join(" ", arr)); break;
+            }
+        }
+    }
+}
