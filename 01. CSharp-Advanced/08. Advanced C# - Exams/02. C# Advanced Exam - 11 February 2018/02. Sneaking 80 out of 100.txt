@@ -1,0 +1,226 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+public class Program
+{
+    public static void Main()
+    {
+        int n = int.Parse(Console.ReadLine());
+        char[][] room = new char[n][];
+
+        for (int row = 0; row < n; row++)
+        {
+            room[row] = Console.ReadLine().ToCharArray();
+        }
+        char[] commands = Console.ReadLine().ToCharArray();
+
+        for (int i = 0; i < commands.Length; i++)
+        {
+            //rotate enemies
+            for (int enemyRow = 0; enemyRow < n; enemyRow++)
+            {
+                if (room[enemyRow].Contains('b'))
+                {
+                    for (int enemyCol = 0; enemyCol < room[enemyRow].Length; enemyCol++)
+                    {
+                        if (room[enemyRow][enemyCol] == 'b')
+                        {
+                            if (enemyCol == room[enemyRow].Length - 1)
+                            {
+                                room[enemyRow][enemyCol] = 'd';
+                                break;
+                            }
+                            else
+                            {
+                                room[enemyRow][enemyCol] = '.';
+                                room[enemyRow][enemyCol + 1] = 'b';
+                                break;
+                            }
+                        }
+
+                    }
+                }
+                else if (room[enemyRow].Contains('d'))
+                {
+                    for (int enemyCol = 0; enemyCol < room[enemyRow].Length; enemyCol++)
+                    {
+                        if (room[enemyRow][enemyCol] == 'd')
+                        {
+                            if (enemyCol == 0)
+                            {
+                                room[enemyRow][enemyCol] = 'b';
+                                break;
+                            }
+                            else
+                            {
+                                room[enemyRow][enemyCol] = '.';
+                                room[enemyRow][enemyCol - 1] = 'd';
+                                break;
+                            }
+                        }
+                    }
+                }
+                if (room[enemyRow].Contains('S') && (room[enemyRow].Contains('d') || room[enemyRow].Contains('b')))
+                {
+                    char dOrB = 'a';
+                    int enemyPosition = 0;
+                    int sPosition = 0;
+
+                    for (int enemyCol = 0; enemyCol < room[0].Length; enemyCol++)
+                    {
+                        if (room[enemyRow][enemyCol] == 'b')
+                        {
+                            enemyPosition = enemyCol;
+                            dOrB = 'b';
+                        }
+                        else if (room[enemyRow][enemyCol] == 'd')
+                        {
+                            enemyPosition = enemyCol;
+                            dOrB = 'd';
+                        }
+                        else if (room[enemyRow][enemyCol] == 'S')
+                        {
+                            sPosition = enemyCol;
+                        }
+                    }
+                    if (dOrB == 'd' && enemyPosition > sPosition)
+                    {
+                        room[enemyRow][sPosition] = 'X';
+                        Console.WriteLine($"Sam died at {enemyRow}, {sPosition}");
+                        PrintMatrix(room, n);
+                        return;
+                    }
+                    else if (dOrB == 'b' && enemyPosition < sPosition)
+                    {
+                        room[enemyRow][sPosition] = 'X';
+                        Console.WriteLine($"Sam died at {enemyRow}, {sPosition}");
+                        PrintMatrix(room, n);
+                        return;
+                    }
+                }
+            }
+            int verticalDirection = 0;
+            int horizontalDirection = 0;
+            bool checkForNikoladze = false;
+            bool wait = false;
+            bool isDead = false;
+
+            switch (commands[i])
+            {
+                case 'U':
+                    verticalDirection = -1;
+                    checkForNikoladze = true;
+                    isDead = MoveSam(verticalDirection, horizontalDirection, checkForNikoladze, wait, room, n);
+                    ; break;
+                case 'D':
+                    verticalDirection = 1;
+                    checkForNikoladze = true;
+                    isDead = MoveSam(verticalDirection, horizontalDirection, checkForNikoladze, wait, room, n);
+                    ; break;
+                case 'L':
+                    horizontalDirection = -1;
+                    isDead = MoveSam(verticalDirection, horizontalDirection, checkForNikoladze, wait, room, n);
+                    ; break;
+                case 'R':
+                    horizontalDirection = 1;
+                    isDead = MoveSam(verticalDirection, horizontalDirection, checkForNikoladze, wait, room, n);
+                    ; break;
+                case 'W':
+                    wait = true;
+                    isDead = MoveSam(verticalDirection, horizontalDirection, checkForNikoladze, wait, room, n);
+                    ; break;
+            }
+
+            if (isDead)
+            {
+                PrintMatrix(room, n);
+                return;
+            }
+        }
+
+    }
+
+    private static void PrintMatrix(char[][] room, int n)
+    {
+        for (int row = 0; row < n; row++)
+        {
+            Console.WriteLine(string.Join("", room[row]));
+        }
+    }
+
+    private static bool MoveSam(int verticalDirection, int horizontalDirection, bool checkForNikoladze, bool wait, char[][] room, int n)
+    {
+        bool killed = false;
+
+        for (int row = 0; row < n; row++)
+        {
+            if (room[row].Contains('S'))
+            {
+                for (int col = 0; col < room[row].Length; col++)
+                {
+                    int samPosition = 0;
+                    if (room[row][col] == 'S')
+                    {
+                        if (!wait)
+                        {
+                            room[row + verticalDirection][col + horizontalDirection] = 'S';
+                            room[row][col] = '.';
+                        }
+                        samPosition = col + horizontalDirection;
+
+                        if (checkForNikoladze)
+                        {
+                            if (room[row + verticalDirection].Contains('N'))
+                            {
+                                Console.WriteLine("Nikoladze killed!");
+                                for (int N = 0; N < room[row + verticalDirection].Length; N++)
+                                {
+                                    if (room[row + verticalDirection][N] == 'N')
+                                    {
+                                        room[row + verticalDirection][N] = 'X';
+                                        return killed = true;
+                                    }
+                                }
+                            }
+                        }
+                        else if (room[row + verticalDirection].Contains('b'))
+                        {
+                            for (int b = 0; b < room[row].Length; b++)
+                            {
+                                if (room[row + verticalDirection][b] == 'b')
+                                {
+                                    if (b < samPosition)
+                                    {
+                                        room[row + verticalDirection][samPosition] = 'X';
+                                        Console.WriteLine($"Sam died at {row + verticalDirection}, {samPosition}");
+                                        return killed = true;
+                                    }
+                                    break;
+                                }
+                            }
+                        }
+                        else if (room[row + verticalDirection].Contains('d'))
+                        {
+                            for (int d = 0; d < room[row].Length; d++)
+                            {
+                                if (room[row + verticalDirection][d] == 'd')
+                                {
+                                    if (d > samPosition)
+                                    {
+                                        room[row + verticalDirection][samPosition] = 'X';
+                                        Console.WriteLine($"Sam died at {row + verticalDirection}, {samPosition}");
+                                        return killed = true;
+                                    }
+                                    break;
+                                }
+                            }
+                        }
+                        return killed;
+                    }
+                }
+            }
+        }
+        return killed;
+    }
+}

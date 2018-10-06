@@ -1,0 +1,75 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+public class Program
+{
+    public static void Main()
+    {
+        int infoIndex = int.Parse(Console.ReadLine());
+        string information = Console.ReadLine();
+        Dictionary<string, string> people = new Dictionary<string, string>();
+
+        while (information != "end transmissions")
+        {
+            string name = information.Split("=")[0];
+            string rest = information.Split("=")[1];
+
+            if (!people.ContainsKey(name))
+            {
+                people.Add(name, rest);
+            }
+            else
+            {
+                if (!people[name].Contains(rest.Split(":")[0]))
+                {
+                    people[name] += ";" + rest;
+                }
+                else
+                {
+                    string[] keys = people[name].Split(':',';');
+                    for (int i = 0; i < keys.Length; i++)
+                    {
+                        if (keys[i] == rest.Split(":")[0])
+                        {
+                            keys[i + 1] = rest.Split(":")[1];
+                        }
+                    }
+                    List<string> newVal = new List<string>();
+                    for (int i = 0; i < keys.Length; i+=2)
+                    {
+                        newVal.Add(keys[i] +":"+ keys[i + 1]);
+                    }
+                    people[name] = string.Join(";",newVal);
+                }
+            }
+
+            information = Console.ReadLine();
+        }
+
+        information = Console.ReadLine();
+
+        if (people.ContainsKey(information.Split(" ",StringSplitOptions.RemoveEmptyEntries)[1]))
+        {
+            List<string> info = new List<string>(people[information.Split(" ",StringSplitOptions.RemoveEmptyEntries)[1]].Split(";"));
+            info = info.OrderBy(x => x).ToList();
+
+            Console.WriteLine($"Info on {information.Split(" ", StringSplitOptions.RemoveEmptyEntries)[1]}:");
+            int personInfoIndex = 0;
+            foreach (var item in info)
+            {
+                Console.WriteLine($"---{item.Split(":")[0]}: {item.Split(":")[1]}");
+                personInfoIndex += item.Split(":")[0].Length + item.Split(":")[1].Length;
+            }
+            Console.WriteLine($"Info index: {personInfoIndex}");
+            if (personInfoIndex >= infoIndex)
+            {
+                Console.WriteLine("Proceed");
+            }
+            else
+            {
+                Console.WriteLine($"Need {infoIndex - personInfoIndex} more info.");
+            }
+        }
+    }
+}
