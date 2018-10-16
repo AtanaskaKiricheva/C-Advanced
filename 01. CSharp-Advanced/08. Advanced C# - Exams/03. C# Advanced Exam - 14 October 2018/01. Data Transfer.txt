@@ -1,0 +1,67 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text.RegularExpressions;
+
+public class Program
+{
+    public static void Main()
+    {
+        int n = int.Parse(Console.ReadLine());
+        int dataTransfer = 0;
+
+        for (int i = 0; i < n; i++)
+        {
+            string input = Console.ReadLine();
+
+            var senderRegex = Regex.Match(input,"s:.[^;]+");
+            var receiverRegex = Regex.Match(input,"r:.[^;]+");
+            var messageRegex = Regex.Match(input,"m--(\"[a-zA-Z\\s]+\")");
+
+            if (senderRegex.Success && receiverRegex.Success && messageRegex.Success)
+            {
+                //sender
+                for (int j = 2; j < senderRegex.Length; j++)
+                {
+                    if ((senderRegex.ToString()[j] >= 65 && senderRegex.ToString()[j] <= 90) || (senderRegex.ToString()[j] >= 97 && senderRegex.ToString()[j] <= 122) || senderRegex.ToString()[j] == 32)
+                    {
+                        Console.Write(senderRegex.ToString()[j]);
+                    }
+                    else if (senderRegex.ToString()[j] >= 49 && senderRegex.ToString()[j] <= 57)
+                    {
+                        dataTransfer += int.Parse(senderRegex.ToString()[j].ToString());
+                    }
+                    else if ((senderRegex.ToString()[j] >= 49 && senderRegex.ToString()[j] <= 57) && (senderRegex.ToString()[j+1] >= 49 && senderRegex.ToString()[j+1] <= 57))
+                    {
+                        int num = int.Parse(senderRegex.ToString()[j].ToString()) + int.Parse(senderRegex.ToString()[j+1].ToString());
+                        dataTransfer += num;
+                    }
+                }
+                Console.Write(" says ");
+
+                //message
+                Console.Write(messageRegex.Groups[1].Value + " to ");
+                
+                //receiver
+                for (int j = 2; j < receiverRegex.Length; j++)
+                {
+                    if ((receiverRegex.ToString()[j] >= 65 && receiverRegex.ToString()[j] <= 90) || (receiverRegex.ToString()[j] >= 97 && receiverRegex.ToString()[j] <= 122) || receiverRegex.ToString()[j] == 32)
+                    {
+                        Console.Write(receiverRegex.ToString()[j]);
+                    }
+                    else if (receiverRegex.ToString()[j] >= 49 && receiverRegex.ToString()[j] <= 57)
+                    {
+                        dataTransfer += int.Parse(receiverRegex.ToString()[j].ToString());
+                    }
+                    else if ((receiverRegex.ToString()[j] >= 49 && receiverRegex.ToString()[j] <= 57) && (receiverRegex.ToString()[j + 1] >= 49 && receiverRegex.ToString()[j + 1] <= 57))
+                    {
+                        int num = int.Parse(receiverRegex.ToString()[j].ToString()) + int.Parse(receiverRegex.ToString()[j + 1].ToString());
+                        dataTransfer += num;
+                    }
+                }
+                Console.WriteLine();
+            }
+        }
+        Console.WriteLine($"Total data transferred: {dataTransfer}MB");
+    }
+}

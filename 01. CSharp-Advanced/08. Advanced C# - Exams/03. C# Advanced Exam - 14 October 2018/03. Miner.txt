@@ -1,0 +1,141 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text.RegularExpressions;
+
+public class Program
+{
+    public static void Main()
+    {
+        int n = int.Parse(Console.ReadLine());
+        string[] commands = Console.ReadLine().Split();
+        int minerRow = 0;
+        int minerCol = 0;
+        int startCoals = 0;
+        int coals = 0;
+
+        string[][] field = new string[n][];
+        for (int i = 0; i < n; i++)
+        {
+            field[i] = Console.ReadLine().Split();
+            if (field[i].Contains("s"))
+            {
+                minerRow = i;
+                minerCol = Array.IndexOf(field[i], "s");
+            }
+            foreach (var item in field[i])
+            {
+                if (item == "c")
+                {
+                    startCoals++;
+                }
+            }
+        }
+
+        for (int i = 0; i < commands.Length; i++)
+        {
+            if (startCoals-coals <= 0)
+            {
+                break;
+            }
+            if ((commands[i] == "left" && minerCol > 0) || (commands[i] == "right" && minerCol < n - 1)
+                || (commands[i] == "up" && minerRow > 0) || (commands[i] == "down" && minerRow < n - 1))
+            {
+                if ((commands[i] == "left" && field[minerRow][minerCol - 1] == "e") || (commands[i] == "right" && field[minerRow][minerCol + 1] == "e")
+                    || (commands[i] == "down" && field[minerRow + 1][minerCol] == "e") || (commands[i] == "up" && field[minerRow - 1][minerCol] == "e"))
+                {
+                    if (commands[i] == "right")
+                    {
+                        minerCol++;
+                    }
+                    if (commands[i]=="left")
+                    {
+                        minerCol--;
+                    }
+                    if (commands[i]=="down")
+                    {
+                        minerRow++;
+                    }
+                    if (commands[i]=="up")
+                    {
+                        minerRow--;
+                    }
+                    Console.WriteLine($"Game over! ({minerRow}, {minerCol})");
+                    return;
+                }
+                switch (commands[i])
+                {
+                    case "left": coals += moveMiner(0, -1, field); minerCol--; break;
+                    case "right": coals += moveMiner(0, 1, field); minerCol++; break;
+                    case "up": coals += moveMiner(-1, 0, field); minerRow--; break;
+                    case "down": coals += moveMiner(1, 0, field); minerRow++; break;
+                }
+            }
+        }
+
+        if (startCoals - coals == 0)
+        {
+            Console.WriteLine($"You collected all coals! ({minerRow}, {minerCol})");
+        }
+        else
+        {
+            Console.WriteLine($"{startCoals - coals} coals left. ({minerRow}, {minerCol})");
+        }
+    }
+
+    private static int moveMiner(int verticalDirection, int horizontalDirection, string[][] field)
+    {
+        int coal = 0;
+        for (int row = 0; row < field.Length; row++)
+        {
+            if (field[row].Contains("s"))
+            {
+                for (int col = 0; col < field[row].Length; col++)
+                {
+
+                    if (field[row][col] == "s" && horizontalDirection == -1)
+                    {
+                        if (field[row][col - 1] == "c")
+                        {
+                            coal++;
+                        }
+                        field[row][col - 1] = "s";
+                        field[row][col] = "*";
+                        return coal;
+                    }
+                    if (field[row][col] == "s" && horizontalDirection == 1)
+                    {
+                        if (field[row][col + 1] == "c")
+                        {
+                            coal++;
+                        }
+                        field[row][col + 1] = "s";
+                        field[row][col] = "*";
+                        return coal;
+                    }
+                    if (field[row][col] == "s" && verticalDirection == -1)
+                    {
+                        if (field[row - 1][col] == "c")
+                        {
+                            coal++;
+                        }
+                        field[row - 1][col] = "s";
+                        field[row][col] = "*";
+                        return coal;
+                    }
+                    if (field[row][col] == "s" && verticalDirection == 1)
+                    {
+                        if (field[row + 1][col] == "c")
+                        {
+                            coal++;
+                        }
+                        field[row + 1][col] = "s";
+                        field[row][col] = "*";
+                        return coal;
+                    }
+                }
+            }
+        }
+        return coal;
+    }
+}

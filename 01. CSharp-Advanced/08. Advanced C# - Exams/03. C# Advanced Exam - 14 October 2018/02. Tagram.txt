@@ -1,0 +1,52 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+public class Program
+{
+    public static void Main()
+    {
+        string command = Console.ReadLine();
+
+        Dictionary<string, Dictionary<string, int>> data = new Dictionary<string, Dictionary<string, int>>();
+
+        while (command != "end")
+        {
+            if (command.Split()[0] == "ban")
+            {
+                string user = command.Split()[1];
+                data.Remove(user);
+                command = Console.ReadLine();
+                continue;
+            }
+
+            string username = command.Split(" -> ")[0];
+            string tag = command.Split(" -> ")[1];
+            int likes = int.Parse(command.Split(" -> ")[2]);
+
+            if (!data.ContainsKey(username))
+            {
+                data.Add(username, new Dictionary<string, int>());
+                data[username].Add(tag, likes);
+            }
+            else if (!data[username].ContainsKey(tag))
+            {
+                data[username].Add(tag, likes);
+            }
+            else
+            {
+                data[username][tag] += likes;
+            }
+            command = Console.ReadLine();
+        }
+
+        foreach (var userTag in data.OrderByDescending(x=>x.Value.Values.Sum()).ThenBy(x=>x.Value.Count))
+        {
+            Console.WriteLine($"{userTag.Key}");
+            foreach (var tagLikes in userTag.Value)
+            {
+                Console.WriteLine($"- {tagLikes.Key}: {tagLikes.Value}");
+            }
+        }
+    }
+}
