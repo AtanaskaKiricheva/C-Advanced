@@ -11,17 +11,17 @@ namespace DefiningClasses
             List<Rectangle> rectangles = new List<Rectangle>();
 
             string[] data = Console.ReadLine().Split();
-            int n = int.Parse(data[0]);
-            int m = int.Parse(data[1]);
+            double n = double.Parse(data[0]);
+            double m = double.Parse(data[1]);
 
             for (int i = 0; i < n; i++)
             {
                 string[] data1 = Console.ReadLine().Split();
                 string id = data1[0];
-                int width = int.Parse(data1[1]);
-                int heigth = int.Parse(data1[2]);
-                int x = int.Parse(data1[3]);
-                int y = int.Parse(data1[4]);
+                double width = double.Parse(data1[1]);
+                double heigth = double.Parse(data1[2]);
+                double x = double.Parse(data1[3]);
+                double y = double.Parse(data1[4]);
 
                 rectangles.Add(new Rectangle(id, width, heigth, x, y));
             }

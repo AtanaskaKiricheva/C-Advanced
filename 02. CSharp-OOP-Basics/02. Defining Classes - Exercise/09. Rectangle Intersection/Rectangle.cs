@@ -7,12 +7,12 @@ namespace DefiningClasses
     public class Rectangle
     {
         private string id;
-        private int width;
-        private int height;
-        private int x;
-        private int y;
+        private double width;
+        private double height;
+        private double x;
+        private double y;
 
-        public Rectangle(string id, int width, int height, int x, int y)
+        public Rectangle(string id, double width, double height, double x, double y)
         {
             this.Id = id;
             this.Width = width;
@@ -22,9 +22,9 @@ namespace DefiningClasses
         }
 
         public string Id { get; set; }
-        public int Width { get; set; }
-        public int Height { get; set; }
-        public int X { get; set; }
-        public int Y { get; set; }
+        public double Width { get; set; }
+        public double Height { get; set; }
+        public double X { get; set; }
+        public double Y { get; set; }
     }
 }
