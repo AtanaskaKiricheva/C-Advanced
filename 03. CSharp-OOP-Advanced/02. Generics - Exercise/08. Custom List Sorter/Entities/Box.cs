@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Generics.Entities
 {
-    public class Box<T> : IComparable<T> where T : IComparable<T>
+    public class Box<T> where T : IComparable<T>
     {
         private List<T> customList;
 
@@ -21,12 +21,12 @@ namespace Generics.Entities
             customList.Add(element);
         }
 
-        public T Remove(int index)
+        public void Remove(int index)
         {
             var currentElement = customList[index];
             customList.Remove(currentElement);
 
-            return currentElement;
+            //return currentElement;
         }
 
         public bool Contains(T element)
@@ -111,7 +111,7 @@ namespace Generics.Entities
             customList = customList.OrderBy(x => x).ToList();   
         }
 
-        public string Print()
+        public override string ToString()
         {
             string output = "";
 
@@ -123,6 +123,6 @@ namespace Generics.Entities
         }
 
 
-        public List<T> Value { get => customList; set => this.customList = value; }
+        public List<T> Value { get => customList; private set => this.customList = value; }
     }
 }

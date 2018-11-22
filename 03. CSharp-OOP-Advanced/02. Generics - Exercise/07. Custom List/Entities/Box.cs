@@ -6,9 +6,9 @@ using System.Text;
 
 namespace Generics.Entities
 {
-    public class Box<T> : IComparable<T> where T : IComparable<T>
+    public class Box<T> where T : IComparable<T>
     {
-        private List<T> elements;
+        private List<T> customList;
 
         public Box()
         {
@@ -18,20 +18,20 @@ namespace Generics.Entities
 
         public void Add(T element)
         {
-            elements.Add(element);
+            customList.Add(element);
         }
 
-        public T Remove(int index)
+        public void Remove(int index)
         {
-            var currentElement = elements[index];
-            elements.Remove(currentElement);
+            var currentElement = customList[index];
+            customList.Remove(currentElement);
 
-            return currentElement;
+            //return currentElement;
         }
 
         public bool Contains(T element)
         {
-            if (elements.Contains(element))
+            if (customList.Contains(element))
             {
                 return true;
             }
@@ -40,18 +40,18 @@ namespace Generics.Entities
 
         public void Swap(int swapA, int swapB)
         {
-            var valueA = elements[swapA];
-            var valueB = elements[swapB];
+            var valueA = customList[swapA];
+            var valueB = customList[swapB];
 
-            elements[swapA] = valueB;
-            elements[swapB] = valueA;
+            customList[swapA] = valueB;
+            customList[swapB] = valueA;
         }
 
         public int CountGreaterThan(T element)
         {
             int count = 0;
 
-            foreach (var e in elements)
+            foreach (var e in customList)
             {
                 if (e.CompareTo(element) > 0)
                 {
@@ -64,9 +64,9 @@ namespace Generics.Entities
 
         public T Max()
         {
-            var element = elements[0];
+            var element = customList[0];
 
-            foreach (var e in elements)
+            foreach (var e in customList)
             {
                 if (e.CompareTo(element) > 0)
                 {
@@ -78,9 +78,9 @@ namespace Generics.Entities
 
         public T Min()
         {
-            var element = elements[0];
+            var element = customList[0];
 
-            foreach (var e in elements)
+            foreach (var e in customList)
             {
                 var result = e.CompareTo(element);
                 if (e.CompareTo(element) < 0)
@@ -95,7 +95,7 @@ namespace Generics.Entities
         {
             int count = 0;
 
-            foreach (var element in elements)
+            foreach (var element in customList)
             {
                 if (element.CompareTo(comparator) > 0)
                 {
@@ -105,11 +105,17 @@ namespace Generics.Entities
 
             return count;
         }
-        public string Print()
+
+        public void Sort()
+        {
+            customList = customList.OrderBy(x => x).ToList();   
+        }
+
+        public override string ToString()
         {
             string output = "";
 
-            foreach (var item in elements)
+            foreach (var item in customList)
             {
                 output += $"{item}\r\n";
             }
@@ -117,6 +123,6 @@ namespace Generics.Entities
         }
 
 
-        public List<T> Value { get => elements; set => this.elements = value; }
+        public List<T> Value { get => customList; private set => this.customList = value; }
     }
 }

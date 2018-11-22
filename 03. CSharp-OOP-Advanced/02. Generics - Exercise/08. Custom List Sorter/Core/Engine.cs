@@ -24,7 +24,7 @@ namespace Generics.Core
                         box.Add(args[1]);
                         break;
                     case "Remove":
-                        Console.WriteLine(box.Remove(int.Parse(args[1])));
+                        box.Remove(int.Parse(args[1]));
                         break;
                     case "Contains":
                         Console.WriteLine(box.Contains(args[1]));
@@ -42,7 +42,7 @@ namespace Generics.Core
                         Console.WriteLine(box.Min());
                         break;
                     case "Print":
-                        Console.WriteLine(box.Print());
+                        Console.WriteLine(box);
                         break;
                     case "Sort":
                         box.Sort();
