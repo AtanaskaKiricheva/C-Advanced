@@ -80,7 +80,6 @@
 			return sb.ToString().TrimEnd('\r', '\n');
 		}
 
-        //Possible bug at Remove()
 		private void LoadCarryOnBaggage(ITrip trip)
 		{
 			var plane = trip.Airplane;

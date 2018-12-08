@@ -39,7 +39,6 @@ namespace Travel.Entities.Airplanes
         public IReadOnlyCollection<IBag> BaggageCompartment => this.baggageCompartment;
         public IReadOnlyCollection<IPassenger> Passengers => this.passengers;
 
-        //Possible bug in Remove()
         public IEnumerable<IBag> EjectPassengerBags(IPassenger passenger)
         {
             var passengerBags = this.baggageCompartment
@@ -48,11 +47,7 @@ namespace Travel.Entities.Airplanes
             for (int i = 0; i < passengerBags.Length; i++)
             {
                 baggageCompartment.Remove(passengerBags[i]);
-                i--;
             }
-
-            //foreach (var bag in passengerBags)
-            //    this.baggageCompartment.Remove(bag);
 
             return passengerBags;
         }

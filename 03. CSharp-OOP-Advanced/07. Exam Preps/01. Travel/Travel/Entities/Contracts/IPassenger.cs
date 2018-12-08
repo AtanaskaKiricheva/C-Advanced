@@ -7,5 +7,6 @@
 		string Username { get; }
 
 		IList<IBag> Bags { get; }
-	}
+        bool IsChecked { get; set; }
+    }
 }

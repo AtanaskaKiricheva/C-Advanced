@@ -1,23 +1,18 @@
 ﻿namespace Travel.Core
 {
-	using System.Linq;
+    using System;
+    using System.Linq;
 	using Contracts;
 	using Controllers.Contracts;
-	using IO.Contracts;
 
 	public class Engine : IEngine
 	{
-		private readonly IReader reader;
-		private readonly IWriter writer;
-
 		private readonly IAirportController airportController;
 		private readonly IFlightController flightController;
 
-		public Engine(IReader reader, IWriter writer, IAirportController airportController,
+		public Engine(IAirportController airportController,
 			IFlightController flightController)
 		{
-			this.reader = reader;
-			this.writer = writer;
 			this.airportController = airportController;
 			this.flightController = flightController;
 		}
@@ -26,7 +21,7 @@
 		{
 			while (true)
 			{
-				var input = this.reader.ReadLine();
+                var input = Console.ReadLine(); ;
 
 				if (input == "END")
 				{
@@ -38,7 +33,7 @@
 					var result = this.ProcessCommand(input);
 					Console.WriteLine(result);
 				}
-				catch (System.InvalidOperationException ex)
+				catch (InvalidOperationException ex)
 				{
 					Console.WriteLine("ERROR: " + ex.Message);
 				}

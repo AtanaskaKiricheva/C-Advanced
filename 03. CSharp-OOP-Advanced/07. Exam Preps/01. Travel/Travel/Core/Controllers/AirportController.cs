@@ -7,8 +7,6 @@
     using Contracts;
     using Entities;
     using Entities.Contracts;
-    using Entities.Factories;
-    using Entities.Factories.Contracts;
     using Travel.Entities.Airplanes;
     using Travel.Entities.Items;
 
@@ -76,12 +74,14 @@
 
             var trip = airport.GetTrip(tripId);
 
-            var checkedIn = this.airport.Passengers.Any(p => p.Username == username);
+            var person = this.airport.Passengers.FirstOrDefault(p => p.Username == username);
 
-            if (checkedIn)
+            if (person.IsChecked)
             {
                 throw new InvalidOperationException($"{username} is already checked in!");
             }
+
+            person.IsChecked = true;
 
             var confiscatedBags = CheckInBags(passenger, bagIndices);
             trip.Airplane.AddPassenger(passenger);
@@ -118,7 +118,7 @@
         {
             var luggageValue = 0;
 
-            for (int i = 0; i <= bag.Items.Count; i++)
+            for (int i = 0; i < bag.Items.Count; i++)
             {
                 luggageValue += bag.Items.ToArray()[i].Value;
             }
